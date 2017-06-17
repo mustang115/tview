@@ -1,0 +1,47 @@
+//@version=2
+strategy("EUR_Daily_test", shorttitle="EUR_daily_test", overlay=true)
+
+
+//Inputs
+EMA_fast = ema(close, 20)
+EMA_slow = ema(close, 39)
+SMA_long = sma(close, 60)
+
+
+
+plot(EMA_fast, color =red)
+plot(EMA_slow, color =blue)
+plot(SMA_long, color=black)
+
+// Calculation
+bullish_cross = crossover(EMA_fast, EMA_slow+0*syminfo.mintick)
+bearish_cross = crossunder(EMA_fast-0*syminfo.mintick, EMA_slow)
+
+long_exit = crossunder(close,SMA_long)
+short_exit = crossover(close,SMA_long)
+
+// Strategy
+//if bullish_cross
+//    strategy.entry("long", strategy.long)
+//
+//strategy.close("long", when = bearish_cross )
+
+
+// Calculate how many mars since last bar
+tdays       = (timenow-time)/60000.0  // number of minutes since last bar
+tdays       := ismonthly? tdays/1440.0/5.0/4.3/interval : isweekly? tdays/1440.0/5.0/interval : isdaily? tdays/1440.0/interval : tdays/interval // number of bars since last bar
+ebar            = input(defval = 1000, title="Number of Bars for Back Testing", minval=0)
+
+
+if (ebar==0 or tdays<=ebar)
+    if (bullish_cross)
+        strategy.entry("long", strategy.long)
+    else
+        strategy.cancel(id="long")
+    strategy.close("long", when=long_exit)
+
+    if (bearish_cross)
+        strategy.entry("short", strategy.short)
+    else
+        strategy.cancel(id="short")
+    strategy.close("short", when = short_exit)
