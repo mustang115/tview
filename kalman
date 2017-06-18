@@ -1,0 +1,12 @@
+//@version=2
+study("Kalman MA",shorttitle="KLMF",overlay=true)
+p = ohlc4
+
+value1 = 0.2*(p-p[1]) + 0.8*nz(value1[1])
+value2 = 0.1*(high-low)+0.8*nz(value2[1])
+lambda = abs(value1/value2)
+
+alpha = (-lambda*lambda + sqrt(lambda*lambda*lambda*lambda + 16*lambda*lambda))/8
+klmf = alpha*p + (1-alpha)*nz(klmf[1])
+
+plot(klmf,linewidth=3, color=blue, title="klmf", editable = true)
