@@ -1,0 +1,3 @@
+With ParstopWIP try 
+  1. First leg of long taken out at max(EMAfast,EMAslow,SAR, SMA) 
+  2. Second leg taken out lowest if SAR > (EMAfast, EMAslow, SMA) or highest if SAR > (EMAfast,EMAslow,SMA)
