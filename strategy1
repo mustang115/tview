@@ -1,0 +1,6 @@
+Test on CL1
+HMA(9,OHLC4)
+EMA(40,CLOSE)
+240min
+Close of the bar has to be above EMA40 for long and below EMA40 for shorts, on the signal, avoids noise
+Use pitchfork for exits( close outside the MLP or SP)
